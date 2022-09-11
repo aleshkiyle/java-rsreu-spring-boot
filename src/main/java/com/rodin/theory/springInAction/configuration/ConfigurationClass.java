@@ -15,6 +15,6 @@ public class ConfigurationClass {
 
     @Bean
     public ProductService productService() {
-        return new ProductService();
+        return new ProductService(inventoryService());
     }
 }
