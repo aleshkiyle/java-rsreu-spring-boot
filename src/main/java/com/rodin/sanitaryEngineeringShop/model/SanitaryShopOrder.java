@@ -20,8 +20,18 @@ import java.util.EnumSet;
 @Builder
 public class SanitaryShopOrder {
 
+    @NotBlank(message = "Surname is required")
+    private String surname;
+
     @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Patronymic is required")
+    private String patronymic;
+
+    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$",
+            message = "Not a valid phone number")
+    private String phoneNumber;
 
     @Size(min = 1, message = "Pick sny plumbing types")
     private EnumSet<PlumbingTypes> plumbingTypes = EnumSet.noneOf(PlumbingTypes.class);

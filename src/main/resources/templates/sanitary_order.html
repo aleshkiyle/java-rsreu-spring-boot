@@ -6,15 +6,26 @@
     <meta charset="UTF-8">
     <title>Магазин сантехники</title>
 </head>
-<body>
+<body style="color: gray">
 <div>
     <h1 style="color: green">Заказ сантехники</h1>
 </div>
 <form method="post" th:object="${sanitaryOrder}">
     <div>
         <label>
-            Your name:
-            <input type="text" th:field="*{name}" placeholder="Rodin Alexey"/>
+            Введите вашу фамилию:
+            <input type="text" th:field="*{surname}" placeholder="Иванов"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('surname')}"
+                  th:errors="*{surname}">
+                        Error
+                    </span>
+        </label>
+    </div>
+    <div>
+        <label>
+            Введите ваше имя:
+            <input type="text" th:field="*{name}" placeholder="Иван"/>
             <span class="validationError"
                   th:if="${#fields.hasErrors('name')}"
                   th:errors="*{name}">
@@ -24,8 +35,30 @@
     </div>
     <div>
         <label>
-            Plumbing types:
-            <input type="checkbox" name="roles"
+            Введите ваше отчество:
+            <input type="text" th:field="*{patronymic}" placeholder="Иванович"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('patronymic')}"
+                  th:errors="*{patronymic}">
+                        Error
+                    </span>
+        </label>
+    </div>
+    <div>
+        <label>
+            Введите номер вашего телефона:
+            <input type="text" th:field="*{phoneNumber}" placeholder="79585116132"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('phoneNumber')}"
+                  th:errors="*{phoneNumber}">
+                        Error
+                    </span>
+        </label>
+    </div>
+    <div>
+        <label>
+            Выберите тип сантехники:
+            <input type="checkbox" name="typesPlumbing"
                    th:each="plumbingSanitaryType : ${plumbingSanitaryTypes}"
                    th:text="${plumbingSanitaryType}"
                    th:value="${plumbingSanitaryType}"
@@ -38,7 +71,7 @@
     </div>
     <div>
         <label>
-            Your credit card number:
+            Введите номер вашей карты:
             <input type="text" th:field="*{ccNumber}" placeholder="1234 5678 9012 3456"/>
             <span class="validationError"
                   th:if="${#fields.hasErrors('ccNumber')}"
@@ -49,18 +82,18 @@
     </div>
     <div>
         <label>
-            Your credit card expiration:
+            Введите срок истечения действия вашей карты:
+            <input type="text" th:field="*{ccExpiration}" placeholder="05/22"/>
             <span class="validationError"
                   th:if="${#fields.hasErrors('ccNumber')}"
                   th:errors="*{ccExpiration}">
                         Error
                     </span>
-            <input type="text" th:field="*{ccExpiration}" placeholder="05/22"/>
         </label>
     </div>
     <div>
         <label>
-            Your credit card cvv:
+            Введите CVV вашей карты:
             <input type="text" th:field="*{ccCVV}" placeholder="395"/>
             <span class="validationError"
                   th:if="${#fields.hasErrors('ccCVV')}"
