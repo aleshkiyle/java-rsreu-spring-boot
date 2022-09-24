@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns = "http://www.w3.org/1999/xhtml"
+      xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин сантехники</title>
+</head>
+<body>
+<div>
+    <h1 style="color: green">Заказ сантехники</h1>
+</div>
+<form method="post" th:object="${sanitaryOrder}">
+    <div>
+        <label>
+            Your name:
+            <input type="text" th:field="*{name}" placeholder="Rodin Alexey"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}">
+                        Error
+                    </span>
+        </label>
+    </div>
+    <div>
+        <label>
+            Plumbing types:
+            <input type="checkbox" name="roles"
+                   th:each="plumbingSanitaryType : ${plumbingSanitaryTypes}"
+                   th:text="${plumbingSanitaryType}"
+                   th:value="${plumbingSanitaryType}"
+                   th:field="*{plumbingTypes}"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('plumbingTypes')}"
+                  th:errors="*{plumbingTypes}">
+                        Error</span>
+        </label>
+    </div>
+    <div>
+        <label>
+            Your credit card number:
+            <input type="text" th:field="*{ccNumber}" placeholder="1234 5678 9012 3456"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('ccNumber')}"
+                  th:errors="*{ccNumber}">
+                        Error
+                    </span>
+        </label>
+    </div>
+    <div>
+        <label>
+            Your credit card expiration:
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('ccNumber')}"
+                  th:errors="*{ccExpiration}">
+                        Error
+                    </span>
+            <input type="text" th:field="*{ccExpiration}" placeholder="05/22"/>
+        </label>
+    </div>
+    <div>
+        <label>
+            Your credit card cvv:
+            <input type="text" th:field="*{ccCVV}" placeholder="395"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('ccCVV')}"
+                  th:errors="*{ccCVV}">
+                        Error
+                    </span>
+        </label>
+    </div>
+    <button type="submit">Сделать заказ</button>
+</form>
+</body>
+</html>

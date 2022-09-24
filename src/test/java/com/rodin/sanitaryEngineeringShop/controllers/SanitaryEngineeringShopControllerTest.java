@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(SpringRunner.class)
 
-@WebMvcTest(SanitaryEngineeringShopController.class) /*Тест для SanitaryEngineeringShopController*/
+@WebMvcTest(HomeController.class) /*Тест для SanitaryEngineeringShopController*/
 public class SanitaryEngineeringShopControllerTest {
 
     @Autowired
