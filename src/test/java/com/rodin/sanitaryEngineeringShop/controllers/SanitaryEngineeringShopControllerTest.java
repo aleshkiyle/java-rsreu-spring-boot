@@ -21,7 +21,7 @@ public class SanitaryEngineeringShopControllerTest {
 
     @Test
     public void testHomePage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/sanitaryShop/homePage")) /*Выполнение GET-запроса*/
+        mockMvc.perform(MockMvcRequestBuilders.get("/homePage")) /*Выполнение GET-запроса*/
                 .andExpect(MockMvcResultMatchers.status().isOk()) /*Ожидание HTTP-ответа 200*/
                 .andExpect(MockMvcResultMatchers.view().name("sanitaryEngineeringShop")) /*Ожидание ответа "sanitaryEngineeringShop"*/
                 .andExpect(MockMvcResultMatchers.content().string(containsString("Магазин"))); /* Проверка на наличие содержания текста в строке */
