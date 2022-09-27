@@ -2,6 +2,7 @@ package com.rodin.sanitaryEngineeringShop.controllers;
 
 import com.rodin.sanitaryEngineeringShop.model.PlumbingTypes;
 import com.rodin.sanitaryEngineeringShop.model.SanitaryShopOrder;
+import com.rodin.sanitaryEngineeringShop.repository.JDBCSanitaryOrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -18,6 +19,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/sanitary_order")
 public class SanitaryShopOrderController {
+
+    private final JDBCSanitaryOrderRepository jdbcSanitaryOrderRepository;
+
+    public SanitaryShopOrderController(JDBCSanitaryOrderRepository jdbcSanitaryOrderRepository) {
+        this.jdbcSanitaryOrderRepository = jdbcSanitaryOrderRepository;
+    }
 
     @ModelAttribute("plumbingSanitaryTypes")
     public List<PlumbingTypes> bindBreakDownTypesAttribute() {
@@ -40,6 +47,7 @@ public class SanitaryShopOrderController {
             return "sanitary_order";
         }
         log.info("Sanitary order submitted: " + sanitaryShopOrder);
+        this.jdbcSanitaryOrderRepository.save(sanitaryShopOrder);
         return "redirect:/homePage";
     }
 }
