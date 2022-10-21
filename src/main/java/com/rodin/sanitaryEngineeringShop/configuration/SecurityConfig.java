@@ -1,56 +1,52 @@
 package com.rodin.sanitaryEngineeringShop.configuration;
 
+import com.rodin.sanitaryEngineeringShop.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable();
-
-        httpSecurity.authorizeHttpRequests().antMatchers("/login").permitAll();
-        httpSecurity.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/sanitary_order")
-                .hasAnyAuthority("ROLE_USER");
-        httpSecurity.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/sanitary_order")
-                .hasAnyAuthority("ROLE_USER");
-        httpSecurity.authorizeHttpRequests().anyRequest().permitAll();
-
-        httpSecurity.formLogin().loginPage("/login");
-        httpSecurity.formLogin().failureUrl("/login-error");
-        httpSecurity.logout().logoutSuccessUrl("/");
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
-
-
-    // Объявление bean-компонента PasswordEncoder,
-    // который му быдем использовать при создании новых пользователей
+    // Объявление bean-компонента PasswordEncoder, который му быдем использовать при создании новых пользователей
     // и при аутентификации.
-    @SuppressWarnings("deprecation")
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new StandardPasswordEncoder(); // применяет надёжное шифрования bcrypt;
+        return new BCryptPasswordEncoder(); // применяет надёжное шифрования bcrypt;
+    }
+
+    @Bean
+    public UserDetailService userDetailService(PasswordEncoder passwordEncoder) {
+        List<UserDetails> usersList = new ArrayList<>();
+        usersList.add(
+                new User("aleshkiyle", passwordEncoder.encode("password"),
+                        List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+        usersList.add(
+                new User("frs717", passwordEncoder.encode("password"),
+                        List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+        return (UserDetailService) new InMemoryUserDetailsManager(usersList);
+    }
+
+    @Bean
+    public UserDetailService userDetailService(UserRepository userRepository) {
+        return userName -> {
+            Optional<com.rodin.sanitaryEngineeringShop.model.User> user = userRepository.findByUserName(userName);
+            if (user.isPresent()) {
+                return user.get();
+            } else {
+                throw new UsernameNotFoundException("User " + userName + " not found");
+            }
+        };
     }
 }
