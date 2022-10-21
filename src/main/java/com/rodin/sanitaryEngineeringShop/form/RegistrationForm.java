@@ -9,13 +9,13 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class RegistrationForm {
 
-    @NotBlank
+    @NotBlank(message = "Username should not be blank")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Password should not be blank")
     private String password;
 
     public User toUser(PasswordEncoder encoder) {
-        return new User(this.username, encoder.encode(this.password));
+        return new User(username, encoder.encode(password));
     }
 }
