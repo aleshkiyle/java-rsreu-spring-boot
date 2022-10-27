@@ -50,6 +50,6 @@ public class SanitaryShopOrderController {
         }
         log.info("Sanitary order submitted: " + sanitaryShopOrder);
         this.sanitaryShopOrderRepository.save(sanitaryShopOrder);
-        return "redirect:/homePage";
+        return "redirect:/";
     }
 }
