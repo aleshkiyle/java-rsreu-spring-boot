@@ -1,0 +1,35 @@
+server:
+  port:
+    8082
+
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      additional-paths:
+        /monitoring
+      exclude:
+        /monitoring
+
+  data:
+    cassandra:
+      port:
+        9043
+      keyspace-name:
+        sanitary_shop
+      schema-action:
+        recreate
+      local-datacenter:
+        datacenter1
+
+  jpa:
+    hibernate:
+      ddl-auto:
+        update
+    show-sql:
+      true
+    properties:
+      hibernate:
+        format-sql:
+          true
