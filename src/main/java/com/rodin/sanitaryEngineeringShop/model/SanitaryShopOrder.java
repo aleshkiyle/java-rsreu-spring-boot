@@ -1,12 +1,12 @@
 package com.rodin.sanitaryEngineeringShop.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
 import javax.persistence.Column;
@@ -18,8 +18,8 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Data
-@Slf4j
 @AllArgsConstructor
+@Builder
 @Table(name = "sanitary_shop_order")
 public class SanitaryShopOrder {
 

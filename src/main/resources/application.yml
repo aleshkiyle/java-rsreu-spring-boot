@@ -14,14 +14,16 @@ spring:
 
   data:
     cassandra:
-      port:
-        9043
       keyspace-name:
         sanitary_shop
       schema-action:
         recreate
       local-datacenter:
         datacenter1
+      username:
+        sanitaryShop
+      password:
+        123
 
   jpa:
     hibernate:
