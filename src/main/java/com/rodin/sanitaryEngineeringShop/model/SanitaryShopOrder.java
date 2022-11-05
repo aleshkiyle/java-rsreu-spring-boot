@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.CreditCardNumber;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -15,8 +17,10 @@ import java.util.Collection;
 @Data
 @Slf4j
 @AllArgsConstructor
+@Document("sanitaryShopOrder")
 public class SanitaryShopOrder {
 
+    @Id
     private Long id;
 
     public SanitaryShopOrder() {
