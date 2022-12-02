@@ -1,23 +1,18 @@
 package com.rodin.sanitaryEngineeringShop.controllers;
 
-import com.rodin.sanitaryEngineeringShop.model.PlumbingTypes;
 import com.rodin.sanitaryEngineeringShop.model.SanitaryShopOrder;
 import com.rodin.sanitaryEngineeringShop.repository.SanitaryShopOrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/sanitary_order")
 public class SanitaryShopOrderController {
 
@@ -28,28 +23,20 @@ public class SanitaryShopOrderController {
         this.sanitaryShopOrderRepository = sanitaryShopOrderRepository;
     }
 
-    @ModelAttribute("plumbingSanitaryTypes")
-    public List<PlumbingTypes> bindBreakDownTypesAttribute() {
-        return Arrays.asList(PlumbingTypes.values());
-    }
-
-    @ModelAttribute("sanitaryOrder")
-    public SanitaryShopOrder getSanitaryOrderAttribute() {
-        return new SanitaryShopOrder();
-    }
-
     @GetMapping
-    public String getSanitaryOrderForm() {
-        return "sanitary_order";
+    public ResponseEntity<List<SanitaryShopOrder>> getSanitaryShopOrders() {
+        return ResponseEntity.ok(sanitaryShopOrderRepository.findAll());
     }
 
     @PostMapping
-    public String processOrder(@Valid @ModelAttribute("sanitaryOrder") SanitaryShopOrder sanitaryShopOrder, Errors errors) {
+    public ResponseEntity<SanitaryShopOrder> processOrder(@Valid @ModelAttribute("sanitaryOrder")
+                                                              SanitaryShopOrder sanitaryShopOrder,
+                                              Errors errors) {
         if (errors.hasErrors()) {
-            return "sanitary_order";
+            return ResponseEntity.badRequest().body(null);
         }
         log.info("Sanitary order submitted: " + sanitaryShopOrder);
-        this.sanitaryShopOrderRepository.save(sanitaryShopOrder);
-        return "redirect:/homePage";
+        SanitaryShopOrder savedSanitaryShopOrder = this.sanitaryShopOrderRepository.save(sanitaryShopOrder);
+        return ResponseEntity.ok(savedSanitaryShopOrder);
     }
 }
